@@ -2,7 +2,20 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require('fs');
 const { readdirSync } = require('fs');
-var prefix = "-"
+const fse = require('fs-extra');
+var prefix = "s!"
+
+client.on("ready", () => {
+  console.log("Estoy listo!");
+});
+
+client.on("message", (message) => {
+ if(message.content.startsWith("ping")) {
+   message.channel.send("pong!");
+ }
+
+});
+
 
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./comandos').filter(file => file.endsWith('.js'));
@@ -29,10 +42,9 @@ client.on('message', async (message) => {
     }
     });
 
-client.on("ready", () => {
-    console.log("Estoy listo!");
- });
- 
+  
+
+
  client.on("message", (message) => {
      if(message.author.bot)return;
      if(message.channel.type == "dm")return;
@@ -49,7 +61,8 @@ client.on("ready", () => {
  
 
 });
- 
+
+
  const Distube = require('distube')
  client.distube = new Distube(client, {
    
@@ -77,5 +90,37 @@ client.on("ready", () => {
   
  })
 
- const mySecret = process.env['TOKEN']
- client.login(mySecret); 
+ 
+
+ const { WelcomeImage } = require('zjuqn')
+
+
+client.on('guildMemberAdd', async (member) => {
+  const canal = member.guild.channels.cache.get("904448100251349023")
+  if(!canal) return;
+
+  const av = message.author.displayAvatarURL({ format: 'png'})
+  
+  const bg = "https://cdn.discordapp.com/attachments/904422192480141395/904447737406296115/sera.png"
+
+const titleWel = "Bienvenido"
+
+const colorWel = "ffff"
+
+const data = await new WelcomeImage({
+            token: "gibm34ZomJe573WS",
+            background: bg,
+            avatar: av,
+            title: titleWel,
+            color: colorWel,
+
+
+})
+
+const imagen = await data.obtener()
+
+canal.send(imagen)
+
+})
+
+ client.login("OTAzMDE2NTY2NTI5MDY5MTM3.YXm1tg.fCyCHQIN1HXS2eZXyK_mt7LqlC4");
